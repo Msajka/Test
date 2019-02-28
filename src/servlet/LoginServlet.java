@@ -56,19 +56,20 @@ public class LoginServlet extends HttpServlet {
 					+ "' and password='" + password + "'";
 			LogUtil.log(sql);
 			ResultSet result = statement.executeQuery(sql);
-			if (result.next()) { // ÄÜ²éµ½¸ÃÕËºÅ£¬ËµÃ÷ÒÑ¾­×¢²á¹ıÁË
+			if (result.next()) { // ï¿½Ü²éµ½ï¿½ï¿½ï¿½ËºÅ£ï¿½Ëµï¿½ï¿½ï¿½Ñ¾ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½
 				code = "200";
-				message = "µÇÂ½³É¹¦";
+				message = "ç™»é™†æˆåŠŸ";
 			} else {
  
 				code = "100";
-				message = "µÇÂ¼Ê§°Ü£¬ÃÜÂë²»Æ¥Åä»òÕËºÅÎ´×¢²á";
+				message = "ç™»å½•å¤±è´¥ï¼Œå¯†ç ä¸åŒ¹é…æˆ–è´¦å·æœªæ³¨å†Œ";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
  
-		response.getWriter().append("code:").append(code).append(";message:").append(message);
+		//response.getWriter().apl.pend("code:").append(code).append(";message:").append(message);
+		response.getWriter().append(code);
 
 	}
 

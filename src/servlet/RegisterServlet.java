@@ -41,12 +41,21 @@ public class RegisterServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Content-type", "text/html;charset=UTF-8");
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-		String code = "";
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		String code = "0";
 		String message = "";
- 
+		String status = "0";
+		
 		String account = request.getParameter("account");
 		String password = request.getParameter("password");
+		String name = request.getParameter("name");
+		String gender = request.getParameter("gender");
+		String school = request.getParameter("school");
+		String major = request.getParameter("major");
+		String classnum = request.getParameter("class");
+		String studentnum = request.getParameter("studentnum");
+		
+		
 		LogUtil.log(account + ";" + password);
  
 		Connection connect = DatabaseUtil.getConnection();
@@ -55,26 +64,43 @@ public class RegisterServlet extends HttpServlet {
 			String sql = "select account from " + "account" + " where account='" + account + "'";
 			LogUtil.log(sql);
 			ResultSet result = statement.executeQuery(sql);
-			if (result.next()) { // ÄÜ²éµ½¸ÃÕËºÅ£¬ËµÃ÷ÒÑ¾­×¢²á¹ıÁË
+			if (result.next()) { // ï¿½Ü²éµ½ï¿½ï¿½ï¿½ËºÅ£ï¿½Ëµï¿½ï¿½ï¿½Ñ¾ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½
 				code = "100";
-				message = "¸ÃÕËºÅÒÑ´æÔÚ";
-			} else {
+				message = "è´¦å·å·²å­˜åœ¨";
+			} 
+			
+			//String sql2 = "select email from " + "accountinfo" + " where email='" + email + "'";
+			//LogUtil.log(sql2);
+			//ResultSet result2 = statement.executeQuery(sql2);
+			//if (result2.next()) { 
+			//	code = "101";
+			//	message = "é‚®ç®±å·²å­˜åœ¨";
+			//} 
+		
+			if (code == "0")
+			{
 				String sqlInsert = "insert into " + "account" + "(account, password) values('"
 						+ account + "', '" + password + "')";
 				LogUtil.log(sqlInsert);
-				if (statement.executeUpdate(sqlInsert) > 0) { // ·ñÔò½øĞĞ×¢²áÂß¼­£¬²åÈëĞÂÕËºÅÃÜÂëµ½Êı¾İ¿â
+				String sqlInsert2 = "insert into " + "accountinfo" + "(account, name,gender,school,major,studentnum) values('"
+						+ account + "', '" + name + "', '"+ gender +"', '"+ school +"', '"+ major + "', '"+ classnum + "', '" + studentnum +  "')";
+				LogUtil.log(sqlInsert2);
+				
+				if (statement.executeUpdate(sqlInsert) > 0 && statement.executeUpdate(sqlInsert2) > 0) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½İ¿ï¿½
 					code = "200";
-					message = "×¢²á³É¹¦";
+					message = "æ³¨å†ŒæˆåŠŸ";
+					
 				} else {
 					code = "300";
-					message = "×¢²áÊ§°Ü";
+					message = "æ³¨å†Œå¤±è´¥";
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
  
-		response.getWriter().append("code:").append(code).append(";message:").append(message);
+		//response.getWriter().append("code:").append(code).append(";message:").append(message);
+		response.getWriter().append(code);
 
 	}
 
