@@ -72,7 +72,7 @@ public class sendSms extends HttpServlet {
 			//生成6位验证码
 			String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
 			//发送短信
-			ZhenziSmsClient client = new ZhenziSmsClient("https://sms_developer.zhenzikj.com","100809", "0c4eecfb-2348-4624-bda8-1e63cca4962a");
+			ZhenziSmsClient client = new ZhenziSmsClient("url","id", "code");
 			String result = client.send(phone, "咻咻咻咻！！您的验证码为:" + verifyCode + "，该码有效期为5分钟，该码只能使用一次！");
 			json = JSONObject.parseObject(result);
 			
