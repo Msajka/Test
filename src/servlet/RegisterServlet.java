@@ -1,5 +1,6 @@
 package servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -40,20 +41,28 @@ public class RegisterServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Content-type", "text/html;charset=UTF-8");
-		
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		String code = "0";
+
+		String code = "";
 		String message = "";
+		
+		BufferedReader reader = request.getReader();
+		String requestStr = reader.readLine();
+		LogUtil.log(requestStr); 
+		
+		HashMap<String, String> requestMap = parseStrToMap(requestStr);
+
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+
 		String status = "0";
 		
-		String account = request.getParameter("account");
-		String password = request.getParameter("password");
-		String name = request.getParameter("name");
-		String gender = request.getParameter("gender");
-		String school = request.getParameter("school");
-		String major = request.getParameter("major");
-		String classnum = request.getParameter("class");
-		String studentnum = request.getParameter("studentnum");
+		String account = requestMap.get("account");
+		String password = requestMap.get("password");
+		String name = requestMap.get("name");
+		String gender = requestMap.get("gender");
+		String school = requestMap.get("school");
+		String major = requestMap.get("major");
+		String classnum = requestMap.get("class");
+		String studentnum = requestMap.get("studentnum");
 		
 		
 		LogUtil.log(account + ";" + password);
@@ -86,7 +95,7 @@ public class RegisterServlet extends HttpServlet {
 						+ account + "', '" + name + "', '"+ gender +"', '"+ school +"', '"+ major + "', '"+ classnum + "', '" + studentnum +  "')";
 				LogUtil.log(sqlInsert2);
 				
-				if (statement.executeUpdate(sqlInsert) > 0 && statement.executeUpdate(sqlInsert2) > 0) { // �������ע���߼����������˺����뵽���ݿ�
+				if (statement.executeUpdate(sqlInsert) > 0 && statement.executeUpdate(sqlInsert2) > 0) {
 					code = "200";
 					message = "注册成功";
 					
@@ -114,5 +123,16 @@ public class RegisterServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	private HashMap<String, String> parseStrToMap(String str) {
+		HashMap<String, String> resultMap = new HashMap<>();
+		String[] items = str.split("&");
+		String[] itemStrs = new String[2];
+		for (String item : items) {
+			itemStrs = item.split("=");
+			resultMap.put(itemStrs[0], itemStrs[1]);
+		}
+		return resultMap;
+	
 
+}
 }
